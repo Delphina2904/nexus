@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -84,11 +85,48 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'electric-pulse': {
+					'0%, 100%': { 
+						opacity: '0.4',
+						transform: 'scale(1)'
+					},
+					'50%': { 
+						opacity: '1',
+						transform: 'scale(1.05)'
+					}
+				},
+				'liquid-flow': {
+					'0%': { 
+						transform: 'translate(0, 0) scale(1)',
+						opacity: '0.3'
+					},
+					'50%': { 
+						transform: 'translate(-10px, -10px) scale(1.1)',
+						opacity: '0.7'
+					},
+					'100%': { 
+						transform: 'translate(0, 0) scale(1)',
+						opacity: '0.3'
+					}
+				},
+				'slide-up': {
+					'0%': { 
+						transform: 'translateY(100px)',
+						opacity: '0'
+					},
+					'100%': { 
+						transform: 'translateY(0)',
+						opacity: '1'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'electric-pulse': 'electric-pulse 2s ease-in-out infinite',
+				'liquid-flow': 'liquid-flow 3s ease-in-out infinite',
+				'slide-up': 'slide-up 0.8s ease-out'
 			}
 		}
 	},
