@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
@@ -9,10 +9,12 @@ import ProductShowcase from '../components/ProductShowcase';
 import Footer from '../components/Footer';
 
 const Index = () => {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   useEffect(() => {
-    // Smooth scrolling for the entire page
     const handleScroll = () => {
-      document.documentElement.style.scrollBehavior = 'smooth';
+      // Show button only when scrolled down more than 300px
+      setShowScrollTop(window.scrollY > 300);
     };
     
     window.addEventListener('scroll', handleScroll);
@@ -37,18 +39,22 @@ const Index = () => {
       
       <Footer />
       
-      {/* Scroll to top button */}
+      {/* Scroll to top button - only shows when scrolled down */}
       <motion.button
         className="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold z-50"
         initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 2 }}
+        animate={{ 
+          opacity: showScrollTop ? 1 : 0, 
+          scale: showScrollTop ? 1 : 0 
+        }}
+        transition={{ duration: 0.3 }}
         whileHover={{ 
           scale: 1.1, 
           boxShadow: "0 0 20px rgba(34, 211, 238, 0.6)" 
         }}
         whileTap={{ scale: 0.9 }}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        style={{ pointerEvents: showScrollTop ? 'auto' : 'none' }}
       >
         ↑
       </motion.button>
