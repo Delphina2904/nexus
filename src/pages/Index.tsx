@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
+import ServicesSection from '../components/ServicesSection';
 import StatsSection from '../components/StatsSection';
 import Timeline from '../components/Timeline';
 import ProductShowcase from '../components/ProductShowcase';
@@ -43,7 +44,7 @@ const Index = () => {
 
   return (
     <motion.div 
-      className="min-h-screen bg-black overflow-x-hidden"
+      className="min-h-screen bg-white overflow-x-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -52,6 +53,7 @@ const Index = () => {
       
       <main>
         <HeroSection />
+        <ServicesSection />
         <StatsSection />
         <Timeline />
         <ProductShowcase />
@@ -61,7 +63,7 @@ const Index = () => {
       
       {/* Enhanced Scroll to top button with better visibility control */}
       <motion.button
-        className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold z-50 shadow-lg shadow-cyan-400/50"
+        className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold z-50 shadow-lg shadow-green-400/50"
         initial={{ opacity: 0, scale: 0, y: 20 }}
         animate={{ 
           opacity: showScrollTop ? 1 : 0, 
@@ -74,8 +76,8 @@ const Index = () => {
         }}
         whileHover={{ 
           scale: showScrollTop ? 1.1 : 0, 
-          boxShadow: "0 0 25px rgba(34, 211, 238, 0.8)",
-          background: "linear-gradient(45deg, #00ffff, #0080ff)"
+          boxShadow: "0 0 25px rgba(34, 197, 94, 0.8)",
+          background: "linear-gradient(45deg, #22c55e, #3b82f6)"
         }}
         whileTap={{ scale: showScrollTop ? 0.95 : 0 }}
         onClick={scrollToTop}

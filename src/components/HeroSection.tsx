@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
@@ -73,7 +74,7 @@ const HeroSection = () => {
       life: number;
     }> = [];
 
-    // Create enhanced water particles
+    // Create enhanced water particles with blue theme
     for (let i = 0; i < 120; i++) {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
@@ -85,7 +86,7 @@ const HeroSection = () => {
         vx: (Math.random() - 0.5) * 0.5,
         vy: (Math.random() - 0.5) * 0.5,
         radius: Math.random() * 2 + 0.5,
-        color: Math.random() > 0.7 ? '#00ffff' : Math.random() > 0.4 ? '#0080ff' : '#4dd0e1',
+        color: Math.random() > 0.7 ? '#3b82f6' : Math.random() > 0.4 ? '#1d4ed8' : '#60a5fa',
         life: 1
       });
     }
@@ -109,7 +110,7 @@ const HeroSection = () => {
     canvas.addEventListener('mouseleave', handleMouseLeave);
 
     const animate = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillStyle = 'rgba(37, 99, 235, 0.02)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((particle, index) => {
@@ -173,7 +174,7 @@ const HeroSection = () => {
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius * (0.8 + velocity * 0.4), 0, Math.PI * 2);
         
-        // Enhanced glow effect
+        // Enhanced glow effect with blue theme
         const gradient = ctx.createRadialGradient(
           particle.x, particle.y, 0,
           particle.x, particle.y, particle.radius * 3
@@ -200,7 +201,7 @@ const HeroSection = () => {
             ctx.lineTo(otherParticle.x, otherParticle.y);
             
             const connectionAlpha = (1 - distance / 100) * 0.3 * Math.min(particle.life, otherParticle.life);
-            ctx.strokeStyle = `rgba(0, 255, 255, ${connectionAlpha})`;
+            ctx.strokeStyle = `rgba(59, 130, 246, ${connectionAlpha})`;
             ctx.lineWidth = 2;
             ctx.stroke();
             ctx.restore();
@@ -234,7 +235,7 @@ const HeroSection = () => {
   return (
     <motion.div 
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800"
       style={{ y, opacity }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
@@ -260,15 +261,15 @@ const HeroSection = () => {
           exit={{ scale: 4, opacity: 0 }}
           transition={{ duration: 2, ease: "easeOut" }}
         >
-          <div className="w-20 h-20 rounded-full border-2 border-cyan-400/40" />
+          <div className="w-20 h-20 rounded-full border-2 border-blue-300/40" />
           <motion.div 
-            className="absolute inset-2 rounded-full border border-blue-500/30"
+            className="absolute inset-2 rounded-full border border-blue-400/30"
             initial={{ scale: 0.5 }}
             animate={{ scale: 1.5 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           />
           <motion.div 
-            className="absolute inset-4 rounded-full border border-cyan-300/20"
+            className="absolute inset-4 rounded-full border border-blue-200/20"
             initial={{ scale: 0.3 }}
             animate={{ scale: 2 }}
             transition={{ duration: 1.8, ease: "easeOut" }}
@@ -295,13 +296,13 @@ const HeroSection = () => {
             ease: "easeInOut"
           }}
         >
-          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-cyan-400/20 to-blue-500/20 blur-sm" />
+          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-300/20 to-blue-400/20 blur-sm" />
         </motion.div>
       )}
       
       <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
         <motion.h1 
-          className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
+          className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
@@ -319,7 +320,7 @@ const HeroSection = () => {
         </motion.h2>
         
         <motion.p 
-          className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
+          className="text-xl md:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
@@ -335,11 +336,11 @@ const HeroSection = () => {
           transition={{ duration: 1, delay: 0.8 }}
         >
           <motion.button 
-            className="bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-8 py-4 rounded-full font-medium text-lg liquid-hover"
+            className="bg-gradient-to-r from-white to-blue-50 text-blue-700 px-8 py-4 rounded-full font-medium text-lg shadow-lg"
             whileHover={{ 
               scale: 1.05, 
-              boxShadow: "0 0 30px rgba(34, 211, 238, 0.6)",
-              background: "linear-gradient(45deg, #00ffff, #0080ff)"
+              boxShadow: "0 0 30px rgba(255, 255, 255, 0.4)",
+              background: "linear-gradient(45deg, #ffffff, #dbeafe)"
             }}
             whileTap={{ scale: 0.95 }}
           >
@@ -347,7 +348,7 @@ const HeroSection = () => {
           </motion.button>
           
           <motion.button 
-            className="border-2 border-cyan-400 text-cyan-400 px-8 py-4 rounded-full font-medium text-lg hover:bg-cyan-400 hover:text-black transition-all liquid-hover"
+            className="border-2 border-white text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-white hover:text-blue-700 transition-all"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -356,12 +357,12 @@ const HeroSection = () => {
         </motion.div>
       </div>
       
-      {/* Floating electric elements with enhanced movement */}
+      {/* Floating elements with blue theme */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-16 h-16 border-2 border-cyan-400/30 rounded-lg"
+            className="absolute w-16 h-16 border-2 border-blue-300/30 rounded-lg"
             style={{
               left: `${20 + (i * 15)}%`,
               top: `${30 + (i % 2) * 40}%`,
@@ -379,8 +380,8 @@ const HeroSection = () => {
               ease: "easeInOut",
             }}
           >
-            <div className="w-full h-full bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-lg flex items-center justify-center">
-              <div className="w-8 h-8 bg-cyan-400 rounded-md opacity-60" />
+            <div className="w-full h-full bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-blue-300 rounded-md opacity-60" />
             </div>
           </motion.div>
         ))}
