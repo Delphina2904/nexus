@@ -3,6 +3,45 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance optimizations for smooth animations */
+* {
+  /* Enable hardware acceleration for all elements */
+  transform-style: preserve-3d;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  /* Smooth scrolling behavior */
+  scroll-behavior: smooth;
+  /* Optimize for animations */
+  overflow-x: hidden;
+}
+
+body {
+  /* Enable GPU acceleration */
+  transform: translateZ(0);
+  /* Improve text rendering */
+  text-rendering: optimizeLegibility;
+  /* Reduce layout thrashing */
+  contain: layout style paint;
+}
+
+/* Optimize motion elements for better performance */
+[data-framer-motion] {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

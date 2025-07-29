@@ -50,25 +50,25 @@ const Timeline = () => {
   ];
 
   return (
-    <div className="bg-gray-50 py-20 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="bg-gray-50 py-12 sm:py-16 lg:py-20 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
-          className="text-center mb-20"
+          className="text-center mb-12 sm:mb-16 lg:mb-20"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4 sm:mb-6">
             THE EVOLUTION
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
             Our journey through breakthrough innovations in battery technology
           </p>
           
           {/* Progress indicator */}
           <motion.div 
-            className="mt-8 mx-auto w-64 h-2 bg-gray-200 rounded-full overflow-hidden"
+            className="mt-6 sm:mt-8 mx-auto w-48 sm:w-64 h-2 bg-gray-200 rounded-full overflow-hidden"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
@@ -85,8 +85,8 @@ const Timeline = () => {
         </motion.div>
 
         <div ref={containerRef} className="relative">
-          {/* Enhanced Vertical Progress Line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-2 h-full bg-gradient-to-b from-gray-300 via-gray-200 to-gray-300 rounded-full shadow-lg">
+          {/* Enhanced Vertical Progress Line - Hidden on mobile, visible on tablet+ */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 w-2 h-full bg-gradient-to-b from-gray-300 via-gray-200 to-gray-300 rounded-full shadow-lg hidden md:block">
             <motion.div 
               ref={progressRef}
               className="w-full bg-gradient-to-b from-green-400 via-blue-500 to-teal-500 rounded-full origin-top shadow-green-400/50 shadow-lg"
@@ -114,8 +114,8 @@ const Timeline = () => {
           {timelineData.map((item, index) => (
             <motion.div
               key={index}
-              className={`relative flex items-center mb-24 ${
-                index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+              className={`relative flex items-center mb-12 sm:mb-16 lg:mb-24 ${
+                index % 2 === 0 ? 'md:flex-row flex-col' : 'md:flex-row-reverse flex-col'
               }`}
               initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -124,13 +124,13 @@ const Timeline = () => {
             >
               {/* Enhanced Content Card */}
               <motion.div 
-                className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-12' : 'text-left pl-12'}`}
+                className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12'} text-center md:text-left`}
                 whileHover={{ scale: 1.02, y: -5 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className={`${item.bgColor} backdrop-blur-xl border border-gray-200 rounded-3xl p-8 hover:border-green-400/50 transition-all duration-500 shadow-xl hover:shadow-green-400/20 bg-white/80`}>
+                <div className={`${item.bgColor} backdrop-blur-xl border border-gray-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:border-green-400/50 transition-all duration-500 shadow-xl hover:shadow-green-400/20 bg-white/80`}>
                   <motion.div 
-                    className={`inline-block px-6 py-3 rounded-full bg-gradient-to-r ${item.color} text-white font-bold mb-6 text-lg shadow-lg`}
+                    className={`inline-block px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-r ${item.color} text-white font-bold mb-4 sm:mb-6 text-base sm:text-lg shadow-lg`}
                     whileHover={{ scale: 1.05 }}
                     animate={{
                       boxShadow: ["0 0 10px rgba(34, 197, 94, 0.3)", "0 0 20px rgba(34, 197, 94, 0.5)", "0 0 10px rgba(34, 197, 94, 0.3)"]
@@ -144,14 +144,14 @@ const Timeline = () => {
                     {item.year}
                   </motion.div>
                   
-                  <h3 className="text-3xl font-bold text-gray-800 mb-6">{item.title}</h3>
-                  <p className="text-gray-600 mb-8 leading-relaxed text-lg">{item.description}</p>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">{item.title}</h3>
+                  <p className="text-gray-600 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base lg:text-lg">{item.description}</p>
                   
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     {item.specs.map((spec, specIndex) => (
                       <motion.div
                         key={specIndex}
-                        className="bg-white/60 rounded-xl p-4 text-center border border-gray-200 hover:border-green-400/50 transition-all duration-300"
+                        className="bg-white/60 rounded-xl p-3 sm:p-4 text-center border border-gray-200 hover:border-green-400/50 transition-all duration-300"
                         whileHover={{ 
                           scale: 1.05, 
                           backgroundColor: "rgba(34, 197, 94, 0.1)",
@@ -162,16 +162,16 @@ const Timeline = () => {
                         transition={{ duration: 0.5, delay: index * 0.1 + specIndex * 0.1 }}
                         viewport={{ once: true }}
                       >
-                        <div className="text-green-600 font-semibold">{spec}</div>
+                        <div className="text-green-600 font-semibold text-xs sm:text-sm">{spec}</div>
                       </motion.div>
                     ))}
                   </div>
                 </div>
               </motion.div>
 
-              {/* Enhanced Center Circle */}
+              {/* Enhanced Center Circle - Hidden on mobile */}
               <motion.div 
-                className="absolute left-1/2 transform -translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center z-10 shadow-lg shadow-green-400/50"
+                className="absolute left-1/2 transform -translate-x-1/2 w-12 sm:w-16 h-12 sm:h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-500 items-center justify-center z-10 shadow-lg shadow-green-400/50 hidden md:flex"
                 whileHover={{ scale: 1.3 }}
                 initial={{ scale: 0, rotate: 180 }}
                 whileInView={{ scale: 1, rotate: 0 }}
@@ -184,7 +184,7 @@ const Timeline = () => {
                 }}
                 viewport={{ once: true }}
               >
-                <div className="w-8 h-8 bg-white rounded-full shadow-inner" />
+                <div className="w-6 sm:w-8 h-6 sm:h-8 bg-white rounded-full shadow-inner" />
                 <motion.div
                   className="absolute inset-0 rounded-full border-4 border-white/30"
                   animate={{ rotate: 360 }}
@@ -192,12 +192,12 @@ const Timeline = () => {
                 />
               </motion.div>
 
-              {/* Empty space for opposite side */}
-              <div className="w-5/12" />
+              {/* Empty space for opposite side - Hidden on mobile */}
+              <div className="w-5/12 hidden md:block" />
               
-              {/* Connection line to progress bar */}
+              {/* Connection line to progress bar - Hidden on mobile */}
               <motion.div
-                className={`absolute top-1/2 ${index % 2 === 0 ? 'left-1/2 ml-8' : 'right-1/2 mr-8'} w-12 h-px bg-gradient-to-r from-green-400/50 to-transparent`}
+                className={`absolute top-1/2 ${index % 2 === 0 ? 'left-1/2 ml-6 sm:ml-8' : 'right-1/2 mr-6 sm:mr-8'} w-8 sm:w-12 h-px bg-gradient-to-r from-green-400/50 to-transparent hidden md:block`}
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 transition={{ duration: 0.8, delay: index * 0.2 + 0.5 }}

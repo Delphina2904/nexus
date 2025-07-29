@@ -41,28 +41,28 @@ const ProductShowcase = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-b from-black to-gray-900 py-20">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="bg-gradient-to-b from-black to-gray-900 py-12 sm:py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent mb-4 sm:mb-6">
             PRODUCTS
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4">
             Cutting-edge battery solutions for every application
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {products.map((product, index) => (
             <motion.div
               key={index}
-              className="group relative overflow-hidden rounded-3xl bg-gray-900/50 backdrop-blur-md border border-gray-800 hover:border-cyan-400/50 transition-all duration-500"
+              className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gray-900/50 backdrop-blur-md border border-gray-800 hover:border-cyan-400/50 transition-all duration-500"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
@@ -74,42 +74,42 @@ const ProductShowcase = () => {
                 className={`absolute inset-0 bg-gradient-to-br ${product.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
               />
               
-              <div className="relative p-8 h-full flex flex-col">
-                <div className="mb-6">
+              <div className="relative p-6 sm:p-8 h-full flex flex-col">
+                <div className="mb-4 sm:mb-6">
                   <motion.div 
-                    className={`inline-block px-4 py-2 rounded-full bg-gradient-to-r ${product.gradient} text-white font-bold text-sm mb-4`}
+                    className={`inline-block px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r ${product.gradient} text-white font-bold text-xs sm:text-sm mb-3 sm:mb-4`}
                     whileHover={{ scale: 1.1 }}
                   >
                     {product.category}
                   </motion.div>
                   
-                  <h3 className="text-3xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4 group-hover:text-cyan-400 transition-colors">
                     {product.name}
                   </h3>
                   
-                  <p className="text-gray-300 leading-relaxed mb-6">
+                  <p className="text-gray-300 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">
                     {product.description}
                   </p>
                 </div>
 
                 <div className="flex-1">
-                  <h4 className="text-lg font-semibold text-cyan-400 mb-4">Specifications</h4>
-                  <div className="space-y-3">
+                  <h4 className="text-base sm:text-lg font-semibold text-cyan-400 mb-3 sm:mb-4">Specifications</h4>
+                  <div className="space-y-2 sm:space-y-3">
                     {Object.entries(product.specs).map(([key, value]) => (
                       <motion.div 
                         key={key}
-                        className="flex justify-between items-center p-3 bg-black/30 rounded-lg group-hover:bg-black/50 transition-all"
+                        className="flex justify-between items-center p-2 sm:p-3 bg-black/30 rounded-lg group-hover:bg-black/50 transition-all"
                         whileHover={{ x: 5 }}
                       >
-                        <span className="text-gray-400 text-sm">{key}</span>
-                        <span className="text-white font-semibold">{value}</span>
+                        <span className="text-gray-400 text-xs sm:text-sm">{key}</span>
+                        <span className="text-white font-semibold text-xs sm:text-sm">{value}</span>
                       </motion.div>
                     ))}
                   </div>
                 </div>
 
                 <motion.button 
-                  className="mt-6 w-full py-3 border-2 border-cyan-400 text-cyan-400 rounded-full font-medium hover:bg-cyan-400 hover:text-black transition-all group-hover:shadow-lg group-hover:shadow-cyan-400/25"
+                  className="mt-4 sm:mt-6 w-full py-2 sm:py-3 border-2 border-cyan-400 text-cyan-400 rounded-full font-medium text-sm sm:text-base hover:bg-cyan-400 hover:text-black transition-all group-hover:shadow-lg group-hover:shadow-cyan-400/25"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

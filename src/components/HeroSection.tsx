@@ -14,11 +14,10 @@ const HeroSection = () => {
     offset: ["start start", "end start"]
   });
   
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
-  // Enhanced water ripple effect on mouse move
-  const handleMouseMove = (e: React.MouseEvent) => {
+  // Enhanced water ripple effect on mouse move with throttling
+  const handleMouseMove = React.useCallback((e: React.MouseEvent) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (rect) {
       const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -26,24 +25,29 @@ const HeroSection = () => {
       
       setMousePosition({ x, y });
       
-      // Create ripple effect
-      const newRipple = {
-        x,
-        y,
-        id: Date.now() + Math.random(),
-        time: Date.now()
-      };
-      
-      setRipples(prev => [...prev.slice(-10), newRipple]);
+      // Throttle ripple creation to prevent performance issues
+      if (ripples.length < 5) {
+        const newRipple = {
+          x,
+          y,
+          id: Date.now() + Math.random(),
+          time: Date.now()
+        };
+        
+        setRipples(prev => [...prev.slice(-4), newRipple]);
+      }
     }
-  };
+  }, [ripples.length]);
 
-  // Clean up old ripples
+  // Clean up old ripples with optimized interval
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
-      setRipples(prev => prev.filter(ripple => now - ripple.time < 2000));
-    }, 100);
+      setRipples(prev => {
+        const filtered = prev.filter(ripple => now - ripple.time < 1500);
+        return filtered.length !== prev.length ? filtered : prev;
+      });
+    }, 200);
     
     return () => clearInterval(interval);
   }, []);
@@ -62,6 +66,8 @@ const HeroSection = () => {
 
     resizeCanvas();
 
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 40 : 80; // Reduce particles on mobile
     const particles: Array<{
       x: number;
       y: number;
@@ -74,8 +80,8 @@ const HeroSection = () => {
       life: number;
     }> = [];
 
-    // Create enhanced water particles with blue theme
-    for (let i = 0; i < 120; i++) {
+    // Create optimized water particles with blue theme
+    for (let i = 0; i < particleCount; i++) {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
       particles.push({
@@ -83,9 +89,9 @@ const HeroSection = () => {
         y,
         originalX: x,
         originalY: y,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        radius: Math.random() * 2 + 0.5,
+        vx: (Math.random() - 0.5) * (isMobile ? 0.2 : 0.3), // Reduce velocity on mobile
+        vy: (Math.random() - 0.5) * (isMobile ? 0.2 : 0.3),
+        radius: Math.random() * (isMobile ? 1 : 1.5) + 0.5, // Smaller particles on mobile
         color: Math.random() > 0.7 ? '#3b82f6' : Math.random() > 0.4 ? '#1d4ed8' : '#60a5fa',
         life: 1
       });
@@ -102,39 +108,55 @@ const HeroSection = () => {
       isMouseActive = true;
     };
 
+    // Touch support for mobile
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      mouseX = touch.clientX - rect.left;
+      mouseY = touch.clientY - rect.top;
+      isMouseActive = true;
+    };
+
     const handleMouseLeave = () => {
       isMouseActive = false;
     };
 
     canvas.addEventListener('mousemove', handleCanvasMouseMove);
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchstart', handleTouchMove, { passive: false });
     canvas.addEventListener('mouseleave', handleMouseLeave);
+    canvas.addEventListener('touchend', handleMouseLeave);
 
     const animate = () => {
-      ctx.fillStyle = 'rgba(37, 99, 235, 0.02)';
+      // Clear with higher opacity for better performance
+      ctx.fillStyle = 'rgba(37, 99, 235, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((particle, index) => {
-        // Enhanced liquid water effect
+        // Optimized liquid water effect with mobile adjustments
         if (isMouseActive) {
           const dx = mouseX - particle.x;
           const dy = mouseY - particle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 250) {
-            const force = (250 - distance) / 250;
+          const interactionRadius = isMobile ? 150 : 200; // Smaller interaction radius on mobile
+          if (distance < interactionRadius) {
+            const force = (interactionRadius - distance) / interactionRadius;
             const angle = Math.atan2(dy, dx);
             
-            // Create stronger ripple effect with wave propagation
-            const waveForce = Math.sin(distance * 0.05 - Date.now() * 0.01) * force;
-            particle.vx += Math.cos(angle) * force * 0.3 + Math.cos(angle + Math.PI/2) * waveForce * 0.1;
-            particle.vy += Math.sin(angle) * force * 0.3 + Math.sin(angle + Math.PI/2) * waveForce * 0.1;
+            // Reduced ripple effect for mobile performance
+            const forceMultiplier = isMobile ? 0.15 : 0.2;
+            particle.vx += Math.cos(angle) * force * forceMultiplier;
+            particle.vy += Math.sin(angle) * force * forceMultiplier;
             
-            // Add organic turbulence
-            particle.vx += (Math.random() - 0.5) * 0.05;
-            particle.vy += (Math.random() - 0.5) * 0.05;
+            // Reduced turbulence on mobile
+            const turbulence = isMobile ? 0.01 : 0.02;
+            particle.vx += (Math.random() - 0.5) * turbulence;
+            particle.vy += (Math.random() - 0.5) * turbulence;
             
-            // Enhance particle life near mouse
-            particle.life = Math.min(1, particle.life + 0.02);
+            // Enhance particle life near interaction
+            particle.life = Math.min(1, particle.life + 0.01);
           }
         }
 
@@ -142,71 +164,73 @@ const HeroSection = () => {
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Boundary physics with elastic collision
+        // Optimized boundary physics
         if (particle.x <= particle.radius || particle.x >= canvas.width - particle.radius) {
-          particle.vx *= -0.7;
+          particle.vx *= -0.8;
           particle.x = Math.max(particle.radius, Math.min(canvas.width - particle.radius, particle.x));
         }
         if (particle.y <= particle.radius || particle.y >= canvas.height - particle.radius) {
-          particle.vy *= -0.7;
+          particle.vy *= -0.8;
           particle.y = Math.max(particle.radius, Math.min(canvas.height - particle.radius, particle.y));
         }
 
-        // Gentle return to original position (liquid settling)
-        const returnForceX = (particle.originalX - particle.x) * 0.002;
-        const returnForceY = (particle.originalY - particle.y) * 0.002;
+        // Gentle return to original position
+        const returnForce = isMobile ? 0.0008 : 0.001;
+        const returnForceX = (particle.originalX - particle.x) * returnForce;
+        const returnForceY = (particle.originalY - particle.y) * returnForce;
         particle.vx += returnForceX;
         particle.vy += returnForceY;
 
         // Enhanced friction for realistic liquid movement
-        particle.vx *= 0.98;
-        particle.vy *= 0.98;
+        const friction = isMobile ? 0.985 : 0.99;
+        particle.vx *= friction;
+        particle.vy *= friction;
 
         // Natural life decay
-        particle.life *= 0.998;
+        particle.life *= 0.999;
 
-        // Draw particle with enhanced glow and transparency
+        // Optimized particle rendering
         const velocity = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
-        const alpha = Math.max(0.2, Math.min(1, particle.life * (1 - velocity * 0.5)));
+        const alpha = Math.max(0.3, Math.min(1, particle.life * (1 - velocity * 0.3)));
         
         ctx.save();
         ctx.globalAlpha = alpha;
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius * (0.8 + velocity * 0.4), 0, Math.PI * 2);
+        ctx.arc(particle.x, particle.y, particle.radius * (0.9 + velocity * 0.2), 0, Math.PI * 2);
         
-        // Enhanced glow effect with blue theme
-        const gradient = ctx.createRadialGradient(
-          particle.x, particle.y, 0,
-          particle.x, particle.y, particle.radius * 3
-        );
-        gradient.addColorStop(0, particle.color);
-        gradient.addColorStop(1, 'transparent');
-        
-        ctx.fillStyle = gradient;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = particle.color;
+        // Simplified glow effect - reduced on mobile for performance
+        ctx.fillStyle = particle.color;
+        if (!isMobile) {
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = particle.color;
+        }
         ctx.fill();
         ctx.restore();
 
-        // Connect nearby particles with fluid connections
-        particles.slice(index + 1).forEach(otherParticle => {
-          const dx = particle.x - otherParticle.x;
-          const dy = particle.y - otherParticle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+        // Optimized connections - reduce frequency on mobile
+        const connectionModulo = isMobile ? 4 : 3;
+        const connectionDistance = isMobile ? 60 : 80;
+        
+        if (index % connectionModulo === 0) {
+          particles.slice(index + 1, index + (isMobile ? 3 : 4)).forEach(otherParticle => {
+            const dx = particle.x - otherParticle.x;
+            const dy = particle.y - otherParticle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 100) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            
-            const connectionAlpha = (1 - distance / 100) * 0.3 * Math.min(particle.life, otherParticle.life);
-            ctx.strokeStyle = `rgba(59, 130, 246, ${connectionAlpha})`;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.restore();
-          }
-        });
+            if (distance < connectionDistance) {
+              ctx.save();
+              ctx.beginPath();
+              ctx.moveTo(particle.x, particle.y);
+              ctx.lineTo(otherParticle.x, otherParticle.y);
+              
+              const connectionAlpha = (1 - distance / connectionDistance) * 0.2 * Math.min(particle.life, otherParticle.life);
+              ctx.strokeStyle = `rgba(59, 130, 246, ${connectionAlpha})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+              ctx.restore();
+            }
+          });
+        }
       });
 
       requestAnimationFrame(animate);
@@ -228,6 +252,9 @@ const HeroSection = () => {
     return () => {
       canvas.removeEventListener('mousemove', handleCanvasMouseMove);
       canvas.removeEventListener('mouseleave', handleMouseLeave);
+      canvas.removeEventListener('touchmove', handleTouchMove);
+      canvas.removeEventListener('touchstart', handleTouchMove);
+      canvas.removeEventListener('touchend', handleMouseLeave);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
@@ -236,7 +263,7 @@ const HeroSection = () => {
     <motion.div 
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800"
-      style={{ y, opacity }}
+      style={{ opacity }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -246,7 +273,7 @@ const HeroSection = () => {
         className="absolute inset-0 w-full h-full"
       />
       
-      {/* Enhanced water ripple effects */}
+      {/* Optimized water ripple effects */}
       {ripples.map((ripple) => (
         <motion.div
           key={ripple.id}
@@ -256,28 +283,22 @@ const HeroSection = () => {
             top: `${ripple.y}%`,
             transform: 'translate(-50%, -50%)',
           }}
-          initial={{ scale: 0, opacity: 0.8 }}
-          animate={{ scale: 3, opacity: 0 }}
-          exit={{ scale: 4, opacity: 0 }}
-          transition={{ duration: 2, ease: "easeOut" }}
+          initial={{ scale: 0, opacity: 0.6 }}
+          animate={{ scale: 2.5, opacity: 0 }}
+          exit={{ scale: 3, opacity: 0 }}
+          transition={{ duration: 1.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <div className="w-20 h-20 rounded-full border-2 border-blue-300/40" />
+          <div className="w-16 h-16 rounded-full border border-blue-300/30" />
           <motion.div 
-            className="absolute inset-2 rounded-full border border-blue-400/30"
+            className="absolute inset-1 rounded-full border border-blue-400/20"
             initial={{ scale: 0.5 }}
-            animate={{ scale: 1.5 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-          <motion.div 
-            className="absolute inset-4 rounded-full border border-blue-200/20"
-            initial={{ scale: 0.3 }}
-            animate={{ scale: 2 }}
-            transition={{ duration: 1.8, ease: "easeOut" }}
+            animate={{ scale: 1.2 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           />
         </motion.div>
       ))}
       
-      {/* Cursor follow effect */}
+      {/* Optimized cursor follow effect */}
       {isHovering && (
         <motion.div
           className="absolute pointer-events-none z-20"
@@ -287,101 +308,103 @@ const HeroSection = () => {
             transform: 'translate(-50%, -50%)',
           }}
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.6, 0.8, 0.6],
+            scale: [1, 1.1, 1],
+            opacity: [0.5, 0.7, 0.5],
           }}
           transition={{
-            duration: 2,
+            duration: 1.5,
             repeat: Infinity,
-            ease: "easeInOut"
+            ease: [0.25, 0.46, 0.45, 0.94]
           }}
         >
-          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-300/20 to-blue-400/20 blur-sm" />
+          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-300/15 to-blue-400/15 blur-sm" />
         </motion.div>
       )}
       
-      <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
+      <div className="relative z-10 text-center px-4 sm:px-6 max-w-6xl mx-auto">
         <motion.h1 
-          className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent"
-          initial={{ opacity: 0, y: 50 }}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white via-blue-100 to-blue-200 bg-clip-text text-transparent"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           NEXUS
         </motion.h1>
         
         <motion.h2 
-          className="text-6xl md:text-8xl font-bold mb-8 text-white"
-          initial={{ opacity: 0, y: 50 }}
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold mb-6 sm:mb-8 text-white leading-tight"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           POWERING TOMORROW
         </motion.h2>
         
         <motion.p 
-          className="text-xl md:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed"
-          initial={{ opacity: 0, y: 30 }}
+          className="text-lg sm:text-xl md:text-2xl text-blue-100 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed px-4"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           Revolutionary electric batteries transforming the future of energy storage 
           with zero-compromise technology and unparalleled performance.
         </motion.p>
         
         <motion.div 
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          initial={{ opacity: 0, y: 30 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
           <motion.button 
-            className="bg-gradient-to-r from-white to-blue-50 text-blue-700 px-8 py-4 rounded-full font-medium text-lg shadow-lg"
+            className="w-full sm:w-auto bg-gradient-to-r from-white to-blue-50 text-blue-700 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg shadow-lg"
             whileHover={{ 
-              scale: 1.05, 
-              boxShadow: "0 0 30px rgba(255, 255, 255, 0.4)",
+              scale: 1.02, 
+              boxShadow: "0 0 25px rgba(255, 255, 255, 0.3)",
               background: "linear-gradient(45deg, #ffffff, #dbeafe)"
             }}
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             Explore Technology
           </motion.button>
           
           <motion.button 
-            className="border-2 border-white text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-white hover:text-blue-700 transition-all"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg hover:bg-white hover:text-blue-700 transition-all duration-300"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             Watch Demo
           </motion.button>
         </motion.div>
       </div>
       
-      {/* Floating elements with blue theme */}
+      {/* Optimized floating elements with blue theme */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-16 h-16 border-2 border-blue-300/30 rounded-lg"
+            className="absolute w-12 h-12 border border-blue-300/20 rounded-lg"
             style={{
-              left: `${20 + (i * 15)}%`,
-              top: `${30 + (i % 2) * 40}%`,
+              left: `${25 + (i * 20)}%`,
+              top: `${35 + (i % 2) * 30}%`,
             }}
             animate={{
-              y: [0, -30, 0],
-              rotate: [0, 180, 360],
-              opacity: [0.3, 0.8, 0.3],
-              scale: [1, 1.2, 1],
+              y: [0, -20, 0],
+              rotate: [0, 120, 240, 360],
+              opacity: [0.2, 0.6, 0.2],
+              scale: [1, 1.1, 1],
             }}
             transition={{
-              duration: 5 + i,
+              duration: 4 + i * 0.5,
               repeat: Infinity,
-              delay: i * 0.7,
-              ease: "easeInOut",
+              delay: i * 0.5,
+              ease: [0.25, 0.46, 0.45, 0.94],
             }}
           >
-            <div className="w-full h-full bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-lg flex items-center justify-center">
-              <div className="w-8 h-8 bg-blue-300 rounded-md opacity-60" />
+            <div className="w-full h-full bg-gradient-to-br from-blue-400/10 to-blue-600/10 rounded-lg flex items-center justify-center">
+              <div className="w-6 h-6 bg-blue-300/40 rounded-sm" />
             </div>
           </motion.div>
         ))}
