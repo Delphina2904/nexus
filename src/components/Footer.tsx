@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const Footer = () => {
   const footerLinks = {
-    "Products": ["INSTA Series.", "FLO Technology", "MACH Pro", "Custom Solutions"],
+    "Products": ["INSTA Series.", "FLO Technology.", "MACH Pro", "Custom Solutions"],
     "Technology": ["0 Kelvin™", "Safety Standards", "Charging Tech", "Research"],
     "Company": ["About Us", "Careers", "News", "Contact"],
     "Support": ["Documentation", "FAQ", "Technical Support", "Warranty"]
