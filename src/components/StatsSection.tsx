@@ -9,28 +9,28 @@ const StatsSection = memo(() => {
 
   const stats = [
     {
-      value: "15",
-      label: "Minute Charging",
+      value: "6C",
+      label: "Ultra-Fast Charging",
       icon: "⚡",
-      description: "Ultra-fast charging technology"
+      description: "Maximum charging rate capability"
     },
     {
-      value: "3000",
-      label: "Cycles",
+      value: "5000+",
+      label: "Charge Cycles",
       icon: "🔋",
-      description: "Extended battery lifespan"
+      description: "Extended battery lifespan with our technology"
     },
     {
-      value: "Type 6",
-      label: "Open Network Charging",
-      icon: "🔌",
-      description: "Universal compatibility"
+      value: "95%",
+      label: "Energy Efficiency",
+      icon: "�",
+      description: "Superior energy conversion and storage"
     },
     {
-      value: "176",
-      label: "Wh/Kg",
-      icon: "⚖️",
-      description: "Energy density ratio"
+      value: "-40°C to +60°C",
+      label: "Operating Range",
+      icon: "🌡️",
+      description: "Wide temperature operating capability"
     }
   ];
 

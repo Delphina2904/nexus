@@ -1,4 +1,5 @@
 
+/* Tailwind CSS imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,7 +7,6 @@
 /* Performance optimizations for smooth animations */
 * {
   /* Enable hardware acceleration for all elements */
-  transform-style: preserve-3d;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -23,12 +23,11 @@ body {
   transform: translateZ(0);
   /* Improve text rendering */
   text-rendering: optimizeLegibility;
-  /* Reduce layout thrashing */
-  contain: layout style paint;
+  /* Reduce layout thrashing - removed contain property for better compatibility */
 }
 
 /* Optimize motion elements for better performance */
-[data-framer-motion] {
+.framer-motion-element {
   will-change: transform, opacity;
   transform: translateZ(0);
 }
@@ -159,6 +158,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent; /* Fallback for non-webkit browsers */
   }
 }
 
@@ -184,4 +184,14 @@ body {
 ::selection {
   background: rgba(34, 197, 94, 0.3);
   color: #1f2937;
+}
+
+/* Keyframe animations */
+@keyframes electric-pulse {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }

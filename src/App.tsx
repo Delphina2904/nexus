@@ -3,9 +3,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import VisionMission from "./pages/VisionMission";
+import Navigation from "./components/Navigation";
 
 // Optimize QueryClient for better performance
 const queryClient = new QueryClient({
@@ -22,23 +24,20 @@ const queryClient = new QueryClient({
 });
 
 const App = memo(() => {
-  // Memoize the router setup to prevent unnecessary re-renders
-  const routerConfig = useMemo(() => (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  ), []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        {routerConfig}
+        <BrowserRouter>
+          <Navigation />
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/vision-mission" element={<VisionMission />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );

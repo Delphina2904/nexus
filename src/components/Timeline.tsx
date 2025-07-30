@@ -17,35 +17,35 @@ const Timeline = () => {
   const timelineData = [
     {
       year: "2024",
-      title: "0 KELVIN™ Technology",
-      description: "Revolutionary zero-compromise battery technology with unparalleled safety standards and performance metrics.",
-      specs: ["15 Min Charging", "3000+ Cycles", "Type 6 Charging", "176 Wh/Kg"],
+      title: "Active Thermal Management",
+      description: "Proprietary immersion cooling technology launched with superior heat dissipation, enhanced safety features, and extended battery lifespan across all applications.",
+      specs: ["Immersion Cooling", "Enhanced Safety", "Extended Life", "Superior Heat Transfer"],
       color: "from-green-400 to-blue-500",
       bgColor: "bg-green-500/10"
     },
     {
-      year: "2025",
-      title: "INSTA Series Launch",
-      description: "Compact, portable and swappable batteries with seamless two-minute swaps for continuous mobility.",
-      specs: ["2.5 kWh Capacity", "50V Output", "Rapid Deployment", "Ultra-Portable"],
-      color: "from-blue-500 to-green-600",
+      year: "2025", 
+      title: "AI-Powered BMS Deployment",
+      description: "Intelligent Battery Management Systems with machine learning algorithms for predictive maintenance, optimal charging patterns, and real-time performance optimization.",
+      specs: ["Predictive Analytics", "Smart Optimization", "Real-time Monitoring", "ML Algorithms"],
+      color: "from-blue-500 to-purple-600",
       bgColor: "bg-blue-500/10"
     },
     {
       year: "2026",
-      title: "FLO Technology",
-      description: "Super safe fireproof technology with extended life cycles and cost-effective LFP chemistry.",
-      specs: ["Fireproof Design", "10+ Year Life", "Cost Effective", "Sustainable"],
-      color: "from-green-600 to-teal-500",
-      bgColor: "bg-green-500/10"
+      title: "Ultra-Fast Charging Network",
+      description: "Revolutionary charging infrastructure supporting 0.5C to 6C rates while maintaining battery health and safety standards across Quick Commerce and Mobility solutions.",
+      specs: ["6C Charge Rate", "Network Ready", "Safety Certified", "Multi-Application"],
+      color: "from-purple-600 to-cyan-500",
+      bgColor: "bg-purple-500/10"
     },
     {
       year: "2027",
-      title: "MACH Innovation",
-      description: "Rapid fast charging within minutes with extended life warranty and premium performance.",
-      specs: ["12 Min Charging", "3 Year Warranty", "Premium Build", "High Performance"],
-      color: "from-teal-500 to-blue-500",
-      bgColor: "bg-teal-500/10"
+      title: "Grid-Scale ESS Revolution",
+      description: "Large-scale energy storage systems with advanced life extension algorithms, seamless grid integration, and renewable energy optimization capabilities.",
+      specs: ["Grid Integration", "Life Extension", "Renewable Ready", "Utility Scale"],
+      color: "from-cyan-500 to-green-500",
+      bgColor: "bg-cyan-500/10"
     }
   ];
 
@@ -60,10 +60,10 @@ const Timeline = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-4 sm:mb-6">
-            THE EVOLUTION
+            TECHNOLOGY ROADMAP
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-            Our journey through breakthrough innovations in battery technology
+            Our advancement through breakthrough innovations in energy storage and thermal management technology
           </p>
           
           {/* Progress indicator */}
