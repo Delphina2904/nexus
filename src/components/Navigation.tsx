@@ -5,12 +5,13 @@ import { Link, useLocation } from 'react-router-dom';
 
 const Navigation = memo(() => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
   const navigationItems = [
     { name: 'Home', path: '/' },
-    { name: 'Products', path: '#products' },
-    { name: 'Technology', path: '#technology' },
+    { name: 'Products', path: '#products', scrollTo: 'products-section' },
+    { name: 'Technology', path: '#technology', scrollTo: 'technology-section' },
     { name: 'About', path: '/vision-mission' }
   ];
 
@@ -22,9 +23,43 @@ const Navigation = memo(() => {
     setIsMobileMenuOpen(false);
   }, []);
 
+  const scrollToSection = useCallback((sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const navHeight = 80; // Account for fixed navbar height
+      const elementPosition = element.offsetTop - navHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+  }, []);
+
+  const scrollToContact = useCallback(() => {
+    const element = document.getElementById('contact-section');
+    if (element) {
+      const navHeight = 80;
+      const elementPosition = element.offsetTop - navHeight;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   return (
     <nav 
-      className="fixed top-0 left-0 right-0 w-full z-[9999] transition-all duration-300"
+      className={`fixed top-0 left-0 right-0 w-full z-[9999] transition-all duration-300 ${
+        isScrolled ? 'backdrop-blur-md bg-black/90' : 'backdrop-blur-sm bg-black/70'
+      }`}
       style={{ 
         position: 'fixed',
         top: 0,
@@ -278,13 +313,21 @@ const Navigation = memo(() => {
             />
             
             {navigationItems.map((item, index) => {
-              const isExternal = item.path.startsWith('#');
+              const isExternal = item.path.startsWith('#') && item.scrollTo;
               
               return (
                 <motion.div key={item.name} className="relative">
                   {isExternal ? (
                     <motion.a
-                      href={item.path}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (location.pathname !== '/') {
+                          window.location.href = `/#${item.scrollTo}`;
+                        } else {
+                          scrollToSection(item.scrollTo!);
+                        }
+                      }}
                       className="text-white/90 hover:text-white transition-colors duration-200 relative font-medium z-10"
                       whileHover={{ 
                         scale: 1.05,
@@ -371,6 +414,7 @@ const Navigation = memo(() => {
             {/* Desktop CTA Button */}
             <motion.button 
               className="hidden sm:block relative px-6 py-3 rounded-full font-medium text-sm sm:text-base text-white overflow-hidden"
+              onClick={scrollToContact}
               whileHover={{ 
                 scale: 1.05,
                 boxShadow: "0 0 25px rgba(34,211,238,0.6)"
@@ -483,9 +527,17 @@ const Navigation = memo(() => {
                   return isExternal ? (
                     <motion.a
                       key={item.name}
-                      href={item.path}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        closeMobileMenu();
+                        if (location.pathname !== '/') {
+                          window.location.href = `/#${item.scrollTo}`;
+                        } else {
+                          scrollToSection(item.scrollTo!);
+                        }
+                      }}
                       className="text-white/90 hover:text-white transition-colors duration-200 py-3 px-4 rounded-lg hover:bg-gradient-to-r hover:from-cyan-400/10 hover:to-blue-500/10 font-medium"
-                      onClick={closeMobileMenu}
                       initial={{ opacity: 0, x: -30 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -30 }}
@@ -529,6 +581,10 @@ const Navigation = memo(() => {
                 })}
                 <motion.button 
                   className="sm:hidden relative px-6 py-3 rounded-full font-medium text-center mt-4 text-white overflow-hidden"
+                  onClick={() => {
+                    closeMobileMenu();
+                    scrollToContact();
+                  }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}

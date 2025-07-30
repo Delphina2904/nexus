@@ -701,6 +701,17 @@ const HeroSection = () => {
         >
           <motion.button 
             className="w-full sm:w-auto bg-gradient-to-r from-white to-blue-50 text-blue-700 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg shadow-lg"
+            onClick={() => {
+              const element = document.getElementById('technology-section');
+              if (element) {
+                const navHeight = 80;
+                const elementPosition = element.offsetTop - navHeight;
+                window.scrollTo({
+                  top: elementPosition,
+                  behavior: 'smooth'
+                });
+              }
+            }}
             whileHover={{ 
               scale: 1.02, 
               boxShadow: "0 0 25px rgba(255, 255, 255, 0.3)",
@@ -714,6 +725,17 @@ const HeroSection = () => {
           
           <motion.button 
             className="w-full sm:w-auto border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg hover:bg-white hover:text-blue-700 transition-all duration-300"
+            onClick={() => {
+              const element = document.getElementById('solutions-section');
+              if (element) {
+                const navHeight = 80;
+                const elementPosition = element.offsetTop - navHeight;
+                window.scrollTo({
+                  top: elementPosition,
+                  behavior: 'smooth'
+                });
+              }
+            }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
