@@ -41,7 +41,7 @@ const ProductShowcase = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-b from-black to-gray-900 py-12 sm:py-16 lg:py-20">
+    <div id="products-section" className="bg-gradient-to-b from-black to-gray-900 py-12 sm:py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           className="text-center mb-12 sm:mb-16"

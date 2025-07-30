@@ -67,7 +67,23 @@ const Footer = () => {
                 {links.map((link) => (
                   <li key={link}>
                     <motion.a
-                      href="#"
+                      href={
+                        link === 'About Us' ? '/vision-mission' :
+                        link === 'Contact' ? '#contact-section' :
+                        '#'
+                      }
+                      onClick={link === 'Contact' ? (e) => {
+                        e.preventDefault();
+                        const element = document.getElementById('contact-section');
+                        if (element) {
+                          const navHeight = 80;
+                          const elementPosition = element.offsetTop - navHeight;
+                          window.scrollTo({
+                            top: elementPosition,
+                            behavior: 'smooth'
+                          });
+                        }
+                      } : undefined}
                       className="text-gray-400 hover:text-cyan-400 transition-colors relative text-sm sm:text-base"
                       whileHover={{ x: 5 }}
                     >

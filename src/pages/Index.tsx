@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, memo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '../components/Navigation';
@@ -58,7 +57,7 @@ const Index = memo(() => {
         <ServicesSection />
         
         {/* Product Details Section */}
-        <section className="bg-gray-50 py-16 sm:py-20 lg:py-24">
+        <section id="solutions-section" className="bg-gray-50 py-16 sm:py-20 lg:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="mb-12 sm:mb-16"
@@ -350,7 +349,7 @@ const Index = memo(() => {
         </section>
 
         {/* Technology Section */}
-        <section className="bg-white py-16 sm:py-20 lg:py-24">
+        <section id="technology-section" className="bg-white py-16 sm:py-20 lg:py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               className="mb-12 sm:mb-16"
@@ -799,6 +798,213 @@ const Index = memo(() => {
         <Timeline />
         <ProductShowcase />
       </main>
+
+      {/* Contact Section */}
+      <section id="contact-section" className="bg-gradient-to-br from-gray-900 via-black to-gray-800 py-16 sm:py-20 lg:py-24 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
+          <motion.div
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2 }}
+          >
+            {[...Array(30)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-white rounded-full"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0, 1, 0],
+                }}
+                transition={{
+                  duration: Math.random() * 3 + 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+              />
+            ))}
+          </motion.div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            className="text-center mb-12 sm:mb-16"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center justify-center mb-4 sm:mb-6">
+              <div className="w-12 sm:w-16 h-1 bg-cyan-400 mr-3 sm:mr-4"></div>
+              <span className="text-cyan-400 font-medium text-base sm:text-lg">Contact</span>
+              <div className="w-12 sm:w-16 h-1 bg-cyan-400 ml-3 sm:ml-4"></div>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8">
+              Get In{" "}
+              <span className="relative">
+                Touch
+                <motion.div
+                  className="absolute -bottom-1 sm:-bottom-2 left-0 w-full h-1 bg-cyan-400"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  viewport={{ once: true }}
+                />
+              </span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Ready to revolutionize your energy storage solutions? Let's discuss how Nexus Energy can power your future.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            {/* Contact Form */}
+            <motion.div
+              className="bg-white/10 backdrop-blur-md rounded-3xl p-8 sm:p-12 border border-white/20"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-8">Send us a message</h3>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-white font-medium mb-2">First Name</label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+                      placeholder="John"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-white font-medium mb-2">Last Name</label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+                      placeholder="Doe"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-white font-medium mb-2">Email</label>
+                  <input
+                    type="email"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+                    placeholder="john@example.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-white font-medium mb-2">Company</label>
+                  <input
+                    type="text"
+                    className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent"
+                    placeholder="Your Company"
+                  />
+                </div>
+                <div>
+                  <label className="block text-white font-medium mb-2">Message</label>
+                  <textarea
+                    rows={5}
+                    className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent resize-none"
+                    placeholder="Tell us about your project..."
+                  ></textarea>
+                </div>
+                <motion.button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-8 py-4 rounded-full font-medium text-lg"
+                  whileHover={{ 
+                    scale: 1.02, 
+                    boxShadow: "0 0 25px rgba(34, 211, 238, 0.5)"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                >
+                  Send Message
+                </motion.button>
+              </form>
+            </motion.div>
+
+            {/* Contact Information */}
+            <motion.div
+              className="space-y-8"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20">
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                    <span className="text-white text-xl">📧</span>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">Email Us</h4>
+                    <p className="text-gray-300 mb-2">Get in touch with our team</p>
+                    <a href="mailto:info@nexusenergy.com" className="text-cyan-400 hover:text-cyan-300 transition-colors">
+                      info@nexusenergy.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20">
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-emerald-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                    <span className="text-white text-xl">📞</span>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">Call Us</h4>
+                    <p className="text-gray-300 mb-2">Speak with our experts</p>
+                    <a href="tel:+1234567890" className="text-cyan-400 hover:text-cyan-300 transition-colors">
+                      +1 (234) 567-8900
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20">
+                <div className="flex items-start">
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                    <span className="text-white text-xl">📍</span>
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">Visit Us</h4>
+                    <p className="text-gray-300 mb-2">Our headquarters</p>
+                    <p className="text-cyan-400">
+                      123 Innovation Drive<br />
+                      Tech Valley, CA 94000<br />
+                      United States
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/20">
+                <h4 className="text-xl font-bold text-white mb-4">Follow Us</h4>
+                <div className="flex space-x-4">
+                  {['LinkedIn', 'Twitter', 'GitHub'].map((social) => (
+                    <motion.a
+                      key={social}
+                      href="#"
+                      className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center text-white hover:bg-cyan-400 hover:text-black transition-all"
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <span className="text-sm font-medium">{social.charAt(0)}</span>
+                    </motion.a>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
       
       <Footer />
       
